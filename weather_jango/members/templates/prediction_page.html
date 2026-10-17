@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Prediction System</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: #fff;
+        }
+
+        header {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: auto;
+            opacity: 0.9;
+        }
+
+        .btn {
+            margin-top: 30px;
+            display: inline-block;
+            padding: 15px 40px;
+            background: #ffcc00;
+            color: #000;
+            font-weight: 600;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #ffd633;
+            transform: scale(1.05);
+        }
+
+        section {
+            padding: 60px 10%;
+            background: #f7f9fc;
+            color: #333;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #0f1e3a;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌦️ Weather Prediction System</h1>
+    <p>
+        An intelligent weather forecasting platform built using Python, Machine Learning,
+        Django, and Ollama AI to deliver real-time predictions and smart weather insights.
+    </p>
+
+    <form method="POST" action="{% url 'run_weather' %}" >
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value = "current">
+        <button type="submit" class="btn">
+            🚀 Try Live Prediction
+        </button>
+
+        <p style="
+            margin-top: 12px;
+            font-size: 14px;
+            color: #ffeaa7;
+            opacity: 0.9;
+        ">
+            ⏳ Prediction may take 2–3 minutes. Please wait after clicking.
+        </p>
+    </form>
+
+    <hr style="margin:40px auto; width:60%; opacity:0.3;">
+
+    <h2 style="margin-top:20px;">🌍 Search Weather by Location</h2>
+
+    <form method="POST" action="{% url 'run_weather' %}" >
+        {% csrf_token %}
+
+        <input type="hidden" name="form_type" value='location'>
+        <div style="margin-top:25px;">
+
+            <!-- Country Dropdown -->
+            <select name="country" id="countrySelect" required
+                style="
+                    padding:12px 20px;
+                    border-radius:25px;
+                    border:none;
+                    width:280px;
+                    margin:10px;
+                    font-family:Poppins;
+                ">
+                <option value="">Select Country</option>
+            </select>
+
+            <!-- State Input -->
+            {% comment %} <input type="text" name="state" placeholder="Enter State / Region" required
+                style="
+                    padding:12px 20px;
+                    border-radius:25px;
+                    border:none;
+                    width:220px;
+                    margin:10px;
+                    font-family:Poppins;
+                "> {% endcomment %}
+
+            <!-- PIN Code Input -->
+            <input type="text" name="zipcode" placeholder="Enter ZIP Code" required
+                style="
+                    padding:12px 20px;
+                    border-radius:25px;
+                    border:none;
+                    width:200px;
+                    margin:10px;
+                    font-family:Poppins;
+                ">
+
+        </div>
+
+        <button type="submit" class="btn">
+            🔎 Get Weather by Location
+        </button>
+
+    </form>
+
+    <!-- Country API Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const select = document.getElementById("countrySelect");
+
+            fetch("https://restcountries.com/v3.1/all?fields=name")
+                .then(response => response.json())
+                .then(data => {
+
+                    const countries = data
+                        .map(country => country.name.common)
+                        .sort();
+
+                    countries.forEach(countryName => {
+                        const option = document.createElement("option");
+                        option.value = countryName;
+                        option.textContent = countryName;
+                        select.appendChild(option);
+                    });
+
+                })
+                .catch(error => {
+                    console.error("Error loading countries:", error);
+                });
+
+        });
+        </script>
+
+
+
+</header>
+
+<section>
+    <h2 class="section-title">📌 Project Overview</h2>
+
+    <p style="max-width:900px;margin:auto;text-align:center;">
+        This Weather Prediction System is designed to collect real-time weather data,
+        process historical patterns, and generate accurate forecasts using machine learning models.
+        The platform integrates Large Language Models (LLMs) via Ollama to provide
+        human-like explanations and intelligent weather insights.
+    </p>
+</section>
+
+<section>
+    <h2 class="section-title">⚙️ Technologies Used</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <h3>🐍 Python</h3>
+            <p>
+                Core programming language used for data processing, ETL pipelines,
+                model training, API development, and automation tasks.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>🌐 Django</h3>
+            <p>
+                Used for backend management, admin dashboard, user authentication,
+                and integration with frontend templates.
+            </p>
+        </div>
+
+
+        <div class="card">
+            <h3>🤖 Scikit-learn</h3>
+            <p>
+                Machine learning models such as Random Forest and Regression algorithms
+                are used to predict temperature, humidity, and weather trends.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>🧠 Ollama (LLM)</h3>
+            <p>
+                Integrated local Large Language Models to analyze prediction outputs
+                and generate natural-language weather explanations and insights.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>📊 Data Engineering</h3>
+            <p>
+                ETL pipelines ingest weather data from public APIs, store raw and processed data,
+                and perform feature engineering for time-series forecasting.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title">🔍 Key Features</h2>
+
+    <div class="grid">
+        <div class="card">✔ Real-time weather data ingestion</div>
+        <div class="card">✔ Machine learning-based temperature prediction</div>
+        <div class="card">✔ AI-powered weather explanations using Ollama</div>
+        <div class="card">✔ REST APIs with FastAPI</div>
+        <div class="card">✔ Clean and scalable project architecture</div>
+        <div class="card">✔ Deployment-ready cloud structure</div>
+    </div>
+</section>
+
+<footer>
+    <p>
+        © 2026 Weather Prediction System | Built with Python, FastAPI, Django, Scikit-learn & Ollama
+    </p>
+</footer>
+
+</body>
+</html>

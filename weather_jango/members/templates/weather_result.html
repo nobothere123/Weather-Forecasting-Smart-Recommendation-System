@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Prediction Result</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: #333;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+
+        .location {
+            text-align: center;
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .top-section {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .weather-card {
+            text-align: center;
+            padding: 25px;
+            border-radius: 14px;
+            background: #f3f7ff;
+        }
+
+        .weather-card img {
+            width: 90px;
+        }
+
+        .temp {
+            font-size: 44px;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .desc {
+            font-size: 20px;
+            margin-top: 8px;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-box {
+            background: #f8f9fb;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .detail-box span {
+            color: #555;
+        }
+
+        .ai-section {
+            margin-top: 35px;
+            background: #fdfefe;
+            border-left: 6px solid #2a5298;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .ai-section h2 {
+            color: #2a5298;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 13px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🌦️ Weather Prediction Report</h1>
+
+    <div class="location">
+        {{ data.user_city }}, {{ data.user_state }}, {{ data.user_country }}
+        | Timezone: {{ data.user_timezone }}
+    </div>
+
+    <div class="top-section">
+
+        <!-- Weather summary -->
+        <div class="weather-card">
+            <img src="{{ data.weather_img }}" alt="weather">
+            <div class="temp">
+                {{ data.temp|floatformat:1 }} K
+            </div>
+            <div class="desc">
+                {{ data.current_weather }}
+            </div>
+        </div>
+
+        <!-- Weather details -->
+        <div class="details">
+
+            <div class="detail-box"><b>Feels Like:</b> <span>{{ data.feels_like }} K</span></div>
+            <div class="detail-box"><b>Min Temp:</b> <span>{{ data.temp_min }} K</span></div>
+            <div class="detail-box"><b>Max Temp:</b> <span>{{ data.temp_max }} K</span></div>
+
+            <div class="detail-box"><b>Humidity:</b> <span>{{ data.humidity }} %</span></div>
+            <div class="detail-box"><b>Pressure:</b> <span>{{ data.pressure }} hPa</span></div>
+
+            <div class="detail-box"><b>Wind Speed:</b> <span>{{ data.wind_speed }} m/s</span></div>
+            <div class="detail-box"><b>Wind Direction:</b> <span>{{ data.wind_deg }}°</span></div>
+
+            <div class="detail-box"><b>Cloud Coverage:</b> <span>{{ data.clouds_all }} %</span></div>
+            <div class="detail-box"><b>Visibility:</b> <span>{{ data.visibility }} m</span></div>
+
+            <div class="detail-box"><b>Sea Level:</b> <span>{{ data.sea_level }} hPa</span></div>
+            <div class="detail-box"><b>Ground Level:</b> <span>{{ data.grnd_level }} hPa</span></div>
+
+            <div class="detail-box"><b>Sunrise:</b> <span>{{ data.sunrise }} </span></div>
+            <div class="detail-box"><b>Sunset:</b> <span>{{ data.sunset }} </span></div>
+
+        </div>
+    </div>
+
+    <!-- AI Explanation -->
+    <div class="ai-section">
+        <h2>🧠 AI Weather Analysis</h2>
+        <pre style="white-space: pre-wrap; font-family: inherit;">
+{{ data.result_text }}
+        </pre>
+    </div>
+
+    <footer>
+        Generated using Python · Django · Scikit-learn · Ollama AI
+    </footer>
+
+</div>
+
+</body>
+</html>
